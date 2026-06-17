@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pioneer Infra</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #0a1628;
+    --navy-mid:#12224a;
+    --orange:  #d4620e;
+    --orange-h:#e8731a;
+    --white:   #f8f9fb;
+    --steel:   #3a6ea8;
+    --glass:   rgba(10,22,40,0.72);
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND PHOTO ── */
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+  }
+  .bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: saturate(0.7) brightness(0.55);
+  }
+  .bg-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      rgba(10,22,40,0.92) 0%,
+      rgba(10,22,40,0.70) 45%,
+      rgba(10,22,40,0.25) 100%
+    );
+  }
+
+  /* ── LAYOUT ── */
+  .page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3rem;
+    height: 64px;
+    background: rgba(10,22,40,0.85);
+    border-bottom: 1px solid rgba(58,110,168,0.25);
+    backdrop-filter: blur(8px);
+  }
+  .nav-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.35rem;
+    letter-spacing: 0.18em;
+    color: var(--white);
+  }
+  .nav-brand span { color: var(--orange); }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(248,249,251,0.65);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+
+  /* ── HERO ── */
+  .hero {
+    display: flex;
+    align-items: center;
+    padding: 0 3rem;
+    gap: 3rem;
+  }
+
+  .hero-content {
+    max-width: 560px;
+    flex-shrink: 0;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 2px;
+    background: var(--orange);
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    margin-bottom: 1.4rem;
+  }
+  h1 .accent { color: var(--orange); }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.65;
+    color: rgba(248,249,251,0.78);
+    margin-bottom: 2.4rem;
+    max-width: 440px;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    padding: 0.75rem 1.8rem;
+    background: var(--orange);
+    color: var(--white);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--orange-h); transform: translateY(-1px); }
+
+  .btn-ghost {
+    padding: 0.75rem 1.8rem;
+    background: transparent;
+    color: var(--white);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid rgba(248,249,251,0.35);
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+
+  /* ── SIDEBAR TOPICS ── */
+  .sidebar {
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 2;
+  }
+  .sidebar-btn {
+    padding: 0.6rem 1.1rem;
+    background: rgba(10,22,40,0.65);
+    border: 1px solid rgba(58,110,168,0.35);
+    color: rgba(248,249,251,0.75);
+    font-size: 0.73rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-align: left;
+    cursor: pointer;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    display: block;
+    white-space: nowrap;
+  }
+  .sidebar-btn:hover {
+    background: rgba(212,98,14,0.18);
+    border-color: var(--orange);
+    color: var(--white);
+  }
+  .sidebar-btn .icon {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--orange);
+    margin-right: 0.55rem;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
+  /* ── STATS ── */
+  .stats {
+    padding: 1.6rem 3rem;
+    background: rgba(10,22,40,0.82);
+    border-top: 1px solid rgba(58,110,168,0.2);
+    backdrop-filter: blur(10px);
+    display: flex;
+    gap: 3.5rem;
+    flex-wrap: wrap;
+  }
+  .stat { display: flex; flex-direction: column; gap: 0.2rem; }
+  .stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(248,249,251,0.5);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 0 1.2rem; }
+    .nav-links { display: none; }
+    .hero { padding: 2rem 1.2rem; }
+    .sidebar { display: none; }
+    .stats { padding: 1.2rem; gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg">
+  <img
+    src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=85&auto=format&fit=crop"
+    alt="Schrägseilbrücke über Wasser"
+    onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1920&q=85&auto=format&fit=crop'"
+  >
+  <div class="bg-gradient"></div>
+</div>
+
+<!-- Page -->
+<div class="page">
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-brand">PIONEER <span>INFRA</span></div>
+    <ul class="nav-links">
+      <li><a href="#">Unternehmen</a></li>
+      <li><a href="#">Projekte</a></li>
+      <li><a href="#">Regionen</a></li>
+      <li><a href="#">Kontakt</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" style="position:relative;">
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">Infrastrukturentwicklung</div>
+      <h1>PIONEER<br><span class="accent">INFRA</span></h1>
+      <p class="hero-sub">Wir entwickeln und betreuen Infrastrukturprojekte weltweit, die über Generationen wirken.</p>
+      <div class="cta-row">
+        <a href="#" class="btn-primary">Projekte ansehen</a>
+        <a href="#" class="btn-ghost">Kontakt aufnehmen</a>
+      </div>
+    </div>
+
+    <!-- Sidebar Topics -->
+    <nav class="sidebar" aria-label="Themenbereiche">
+      <a href="#" class="sidebar-btn"><span class="icon"></span>Hochbau &amp; Gebäude</a>
+      <a href="#" class="sidebar-btn"><span class="icon"></span>Verkehr &amp; Mobilität</a>
+      <a href="#" class="sidebar-btn"><span class="icon"></span>Digitale Infrastruktur</a>
+      <a href="#" class="sidebar-btn"><span class="icon"></span>Energie &amp; Versorgung</a>
+      <a href="#" class="sidebar-btn"><span class="icon"></span>Stakeholder &amp; Partner</a>
+      <a href="#" class="sidebar-btn"><span class="icon"></span>Berichte &amp; Dokumente</a>
+    </nav>
+
+  </section>
+
+  <!-- Stats -->
+  <footer class="stats">
+    <div class="stat">
+      <span class="stat-value">140+</span>
+      <span class="stat-label">Projekte</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">2,4 Mrd.</span>
+      <span class="stat-label">Investitionsvolumen</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">18</span>
+      <span class="stat-label">Standorte</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">30 J.</span>
+      <span class="stat-label">Erfahrung</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
