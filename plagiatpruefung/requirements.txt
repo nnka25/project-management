@@ -1,0 +1,2 @@
+# Nur für PDF-Dateien nötig; alles andere nutzt die Python-Standardbibliothek.
+pypdf>=4.0
